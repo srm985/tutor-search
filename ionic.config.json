@@ -2,5 +2,11 @@
   "name": "tutor-search",
   "app_id": "",
   "type": "ionic-angular",
-  "integrations": {}
+  "integrations": {},
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "https://api.wyzant.io"
+    }
+  ]
 }

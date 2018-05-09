@@ -1,14 +1,75 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+    <ion-title> Tutor Search </ion-title>
   </ion-navbar>
 </ion-header>
-
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-sm-4 col-lg-3 class="search-column">
+        <form (ngSubmit)="search()">
+          <ion-item>
+            <ion-label stacked>Keywords:</ion-label>
+            <ion-input name="keywords" [(ngModel)]="searchObject.keywords"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Filter Words:</ion-label>
+            <ion-input name="filterWords" [(ngModel)]="searchObject.filterWords"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="false">
+            <ion-label stacked>Time Zone:</ion-label>
+            <ion-select name="timeZone" multiple="true" [(ngModel)]="searchObject.utcOffset">
+              <ion-option *ngFor="let zone of zoneList.zoneList" [value]="zone.offset">{{zone.name}}</ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="false">
+            <ion-label stacked>Zip Code:</ion-label>
+            <ion-input name="zipCode" type="tel" maxlength="5" [(ngModel)]="searchObject.zip"></ion-input>
+          </ion-item>
+          <ion-item no-lines>
+            <ion-label stacked>Price Range:</ion-label>
+            <ion-range dualKnobs="true" pin="true" min="10" max="200" [(ngModel)]="priceRange" name="priceRange">
+              <ion-label range-left>$10</ion-label>
+              <ion-label range-right>$200</ion-label>
+            </ion-range>
+          </ion-item>
+          <ion-item no-lines>
+            <ion-label stacked>Age Range:</ion-label>
+            <ion-range dualKnobs="true" pin="true" min="18" max="100" [(ngModel)]="ageRange" name="ageRange">
+              <ion-label range-left>18</ion-label>
+              <ion-label range-right>100</ion-label>
+            </ion-range>
+          </ion-item>
+          <button ion-button block margin-top type="submit">SEARCH</button>
+        </form>
+        <form>
+          <ion-item no-lines>
+            <ion-label stacked>Hours Experience:</ion-label>
+            <ion-range pin="true" min="0" max="500" [(ngModel)]="hoursExperience" name="hoursExperience"
+              (ionChange)="updateHoursFilter()">
+              <ion-label range-left>0</ion-label>
+              <ion-label range-right>500+</ion-label>
+            </ion-range>
+          </ion-item>
+        </form>
+      </ion-col>
+      <ion-col col-12 col-sm-8 col-lg-9 class="results-column">
+        <ion-list>
+          <ion-list-header no-lines>Results: {{searchQuantity}}</ion-list-header>
+          <ng-container *ngFor="let result of searchResults">
+            <ion-item *ngIf="result.TotalHours > hoursExperience">
+              <img width="100" height="100" [src]="result.ProfilePictureURL">
+              <br>{{result.FirstName}} - {{result.AverageRating | number:'0.2-2'}}stars from {{result.TotalHours}}hrs
+              <br>
+              <i>{{result.Headline}}</i>
+              <br>
+              <p>{{result.FreeResponse}}</p>
+              <br>
+              <a href="https://wyzant.com{{result.PublicProfileURL}}" target="_blank">Profile</a>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
